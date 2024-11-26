@@ -1,124 +1,153 @@
+:root {
+    /* Style Controls */
+    --feature-item-size: 90%;
+    --color-1: hsl(143, 52%, 51%);
+    --color-2: hsl(189, 52%, 51%);
+    --color-3: hsl(36, 79%, 58%);
+    --color-4: hsl(266, 42%, 59%);
+    --color-5: hsl(0, 0%, 90%);
+    --color-6: hsl(0, 0%, 14%);
+
+    /* Animation Controls */
+    --animate-pos-up: translateY(-10%);
+    --animate-pos-down: translateY(10%);
+    --in-out-speed: 0.2s;
+}
+
 /* General Styles */
-* {
+body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: Arial, sans-serif;
     overflow: hidden;
-}
-
-/* Cover Image */
-.cover-image {
-    width: 100%;
-    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
-    font-weight: bold;
+    height: 100vh;
+    background-color: var(--color-1);
+    transition: background-color 2s ease;
+}
+
+/* Feature Items Container */
+#feature-items {
     position: fixed;
-    top: 0;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-    background-color: white;
-    text-align: center;
+    width: 100%;
+    height: 100%;
 }
 
 /* Feature Items */
 .feature-item {
-    width: 75%;
-    height: 75vh;
+    position: absolute;
+    width: var(--feature-item-size);
+    height: var(--feature-item-size);
+    margin: auto;
+    translate: 6.25% 6.25%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2em;
-    font-weight: bold;
-    position: fixed;
-    top: 0;
+    font-size: 2rem;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
     opacity: 0;
-    transition: opacity 1s ease-in-out;
-    background-color: white;
-    text-align: center;
+    animation-fill-mode: forwards;
 }
 
-/* Background Colors and Visibility */
-.feature-item.active {
+.feature-item:first-child {
     opacity: 1;
 }
 
 /* Navigation Buttons */
 #nav-buttons {
-    position: fixed;
+    position: absolute;
     bottom: 20px;
     right: 20px;
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 #nav-buttons button {
-    background: white;
-    border: 1px solid #333;
-    border-radius: 5px;
     padding: 10px 15px;
-    font-size: 1.2em;
+    font-size: 1.5rem;
+    font-weight: 900;
+    border: none;
+    border-radius: 7px;
+    color: black;
+    background-color: white;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color 0.5s ease;
 }
 
 #nav-buttons button:hover {
-    background: #333;
     color: white;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Quick Nav Bar */
+/* Quick Navigation Dots */
 #quick-nav {
-    position: fixed;
-    right: 10px;
+    position: absolute;
+    right: 20px;
     top: 50%;
     transform: translateY(-50%);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 25px;
 }
 
-#quick-nav .dot {
-    width: 15px;
-    height: 15px;
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 50%;
-    background: gray;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: background-color .5s ease;
 }
 
-#quick-nav .dot.active {
-    background: white;
+.dot.active {
+    background-color: white;
 }
 
-/* Text Box and Footer */
-#text-box {
-    padding: 20px;
-    text-align: center;
+/* Keyframes for animations */
+
+@keyframes keyInFromAbove {
+    from {
+        transform: var(--animate-pos-up);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-footer {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
-    background: #f4f4f4;
+@keyframes keyInFromBelow {
+    from {
+        transform: var(--animate-pos-down);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
-footer a {
-    text-decoration: none;
-    color: #333;
-    font-size: 1.2em;
-    transition: color 0.3s;
+@keyframes keyOutFromAbove {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: var(--animate-pos-up);
+        opacity: 0;
+    }
 }
 
-footer a:hover {
-    color: #3498db;
+@keyframes keyOutFromBelow {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: var(--animate-pos-down);
+        opacity: 0;
+    }
 }
