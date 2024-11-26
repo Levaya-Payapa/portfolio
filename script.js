@@ -1,98 +1,78 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const featureItems = document.querySelectorAll(".feature-item");
-    const navLeft = document.getElementById("nav-left");
-    const navRight = document.getElementById("nav-right");
-    const quickNav = document.getElementById("quick-nav");
-    const body = document.body;
-    let currentIndex = 0;
+// Selectors
+const featureItems = document.querySelectorAll(".feature-item");
+const navLeft = document.querySelector("#nav-left");
+const navRight = document.querySelector("#nav-right");
+const quickNavDots = document.querySelectorAll(".dot");
+const AnimateItemOffDelay = 175;
+const AnimateItemOnDelay = 275 + AnimateItemOffDelay;
 
-    // Initialize Quick Nav Dots
-    featureItems.forEach((_, index) => {
-        const dot = document.createElement("div");
-        dot.classList.add("dot");
-        if (index === 0) dot.classList.add("active");
-        dot.addEventListener("click", () => scrollToFeature(index));
-        quickNav.appendChild(dot);
+let currentIndex = 0;
+let targetIndex = 0; // Tracks the final destination index
+let animationTimeout = null; // Tracks ongoing animation timeout
+
+// Function to get CSS variable value
+const getCSSVariable = (variableName) => {
+    return getComputedStyle(document.documentElement).getPropertyValue(`--${variableName}`).trim();
+};
+
+// Function to navigate between Feature Items
+const navigateToFeature = (newIndex, direction) => {
+    // Clear any ongoing animations
+    if (animationTimeout) {
+        clearTimeout(animationTimeout);
+        animationTimeout = null;
+    }
+
+    // Looping behavior
+    if (newIndex < 0) {
+        newIndex = featureItems.length - 1; // Go to the last item
+    } else if (newIndex >= featureItems.length) {
+        newIndex = 0; // Go to the first item
+    }
+
+    // Update target index
+    targetIndex = newIndex;
+
+    if (targetIndex === currentIndex) return; // Do nothing if no change in index
+
+    const currentItem = featureItems[currentIndex];
+    const nextItem = featureItems[targetIndex];
+
+    // Animate current item off-screen
+    const outAnimation = direction === "right" ? "keyOutFromAbove" : "keyOutFromBelow";
+    currentItem.style.animation = `${outAnimation} 0.2s ease-in forwards`;
+
+    // Schedule incoming item animation after a brief delay
+    animationTimeout = setTimeout(() => {
+        const inAnimation = direction === "right" ? "keyInFromBelow" : "keyInFromAbove";
+        nextItem.style.animation = `${inAnimation} 0.2s ease-out forwards`;
+
+        // Update background color based on the data-color attribute
+        const newColorVariable = nextItem.getAttribute("data-color");
+        const newColor = getCSSVariable(newColorVariable);
+        document.body.style.backgroundColor = newColor;
+
+        // Update Quick Nav Dot state
+        quickNavDots[currentIndex].classList.remove("active");
+        quickNavDots[targetIndex].classList.add("active");
+
+        // Update current index
+        currentIndex = targetIndex;
+    }, AnimateItemOffDelay);
+};
+
+// Initialize Quick Nav Dots
+quickNavDots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+        const direction = index > currentIndex ? "right" : "left";
+        navigateToFeature(index, direction);
     });
-
-    const updateView = () => {
-        featureItems.forEach((item, index) => {
-            item.classList.toggle("active", index === currentIndex);
-        });
-
-        // Update Quick Nav Dots
-        const dots = quickNav.querySelectorAll(".dot");
-        dots.forEach((dot, index) => {
-            dot.classList.toggle("active", index === currentIndex);
-        });
-
-        // Change Background Color
-        const currentColor = featureItems[currentIndex].dataset.color;
-        body.style.backgroundColor = currentColor;
-    };
-
-    const scrollToFeature = (index) => {
-        if (index < 0 || index >= featureItems.length) return;
-        currentIndex = index;
-        featureItems[index].scrollIntoView({ behavior: "smooth" });
-        updateView();
-    };
-
-    // Navigation Button Handlers
-    navLeft.addEventListener("click", () => scrollToFeature(currentIndex - 1));
-    navRight.addEventListener("click", () => scrollToFeature(currentIndex + 1));
-
-    // Detect Manual Scrolling
-    let isScrolling = false;
-    window.addEventListener("scroll", () => {
-        if (isScrolling) return;
-        let closestIndex = currentIndex;
-        let minDistance = Infinity;
-
-        featureItems.forEach((item, index) => {
-            const rect = item.getBoundingClientRect();
-            const distance = Math.abs(rect.top - window.innerHeight / 2);
-            if (distance < minDistance) {
-                minDistance = distance;
-                closestIndex = index;
-            }
-        });
-
-        if (closestIndex !== currentIndex) {
-            currentIndex = closestIndex;
-            updateView();
-        }
-    });
-
-    // Fade Effect for Feature Items
-    window.addEventListener("scroll", () => {
-        featureItems.forEach((item) => {
-            const rect = item.getBoundingClientRect();
-            const midPoint = window.innerHeight / 2;
-            const distance = Math.abs(rect.top - midPoint);
-            const fadeThreshold = window.innerHeight / 3; // Adjust for more or less fade
-            item.style.opacity = distance < fadeThreshold ? 1 : 1 - (distance - fadeThreshold) / fadeThreshold;
-        });
-    });
-
-    // Prevent scrolling loop during auto-scroll
-    const debounce = (func, delay) => {
-        let timeout;
-        return (...args) => {
-            clearTimeout(timeout);
-            timeout = setTimeout(() => func(...args), delay);
-        };
-    };
-
-    const setIsScrollingFalse = debounce(() => {
-        isScrolling = false;
-    }, 100);
-
-    window.addEventListener("scroll", () => {
-        isScrolling = true;
-        setIsScrollingFalse();
-    });
-
-    // Set Initial Background Color
-    body.style.backgroundColor = featureItems[0].dataset.color;
 });
+
+// Event listeners for Nav Buttons
+navLeft.addEventListener("click", () => navigateToFeature(currentIndex - 1, "left"));
+navRight.addEventListener("click", () => navigateToFeature(currentIndex + 1, "right"));
+
+// Set initial background color and Quick Nav Dot state
+document.body.style.backgroundColor = getCSSVariable("color-1");
+quickNavDots[currentIndex].classList.add("active");
