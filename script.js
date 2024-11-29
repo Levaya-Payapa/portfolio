@@ -5,6 +5,7 @@ const navRight = document.querySelector("#nav-right");
 const quickNavDots = document.querySelectorAll(".dot");
 const AnimateItemOffDelay = 175;
 const AnimateItemOnDelay = 275 + AnimateItemOffDelay;
+const SrollDistancePerTransition = 200;
 
 let currentIndex = 0;
 let targetIndex = 0; // Tracks the final destination index
@@ -72,6 +73,28 @@ quickNavDots.forEach((dot, index) => {
 // Event listeners for Nav Buttons
 navLeft.addEventListener("click", () => navigateToFeature(currentIndex - 1, "left"));
 navRight.addEventListener("click", () => navigateToFeature(currentIndex + 1, "right"));
+
+let scrollTimeout = null;
+let lastScrollPosition = window.scrollY;
+
+window.addEventListener("wheel", (event) => {
+    // Clear any ongoing scroll timeout
+    if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+    }
+
+    const scrollDirection = event.deltaY > 0 ? "down" : "up"; // Determine scroll direction
+    const steps = Math.ceil(Math.abs(event.deltaY) / SrollDistancePerTransition); // Determine steps based on scroll distance
+
+    // Calculate new index based on scroll direction
+    const newIndex = currentIndex + (scrollDirection === "down" ? steps : -steps);
+
+    // Navigate to the new index
+    scrollTimeout = setTimeout(() => {
+        navigateToFeature(newIndex, scrollDirection === "down" ? "right" : "left");
+    }, 100); // Small delay to allow for smoother handling
+});
+
 
 // Set initial background color and Quick Nav Dot state
 document.body.style.backgroundColor = getCSSVariable("color-1");
