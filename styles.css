@@ -232,9 +232,10 @@ body {
    /* Video Info */
    .video-info {
        position: fixed;
-       min-height: 350px;
+       min-height: 300px;
        bottom: 0;
        width: 100%;
+       margin-bottom: 60px;
        padding: 8px 15px 15px 15px;
        box-sizing: border-box;
        background-color: var(--bg-color);
@@ -276,7 +277,7 @@ body {
    #quick-nav {
        position: absolute;
        right: 20px;
-       top: calc((100vh - 400px) / 2);
+       top: calc(50vh - 205px);
        transform: translateY(-50%);
        display: flex;
        flex-direction: column;
