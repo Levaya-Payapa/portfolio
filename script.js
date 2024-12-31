@@ -5,10 +5,11 @@ const navLeft = document.querySelector("#nav-left");
 const navRight = document.querySelector("#nav-right");
 const navBar = document.querySelector(".nav-bar");
 const aboutText = document.querySelector('.about-scrolling-text');
-let startY = 0; // Starting Y coordinate of touch
-let startTime = 0; // Starting time of touch
+let startY = 0;
+let touchEndY = 0;
+let startTime = 0;
 const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe (in pixels)
-const TIME_THRESHOLD = 500; // Maximum time for a swipe (in milliseconds)
+const TIME_THRESHOLD = 500; // Maximum time for a swipe (in ms)
 let quickNavDots;
 let animationTimeout = null;
 let activeYouTube = null;
@@ -56,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Show a play button to manually start playback
+// Show Play Button if Auto-Play is Blocked
 window.addEventListener("load", () => {
     let userInteracted = false;
 
@@ -126,7 +127,7 @@ window.addEventListener("load", () => {
 });
 
 
-// Youtube Player
+// Click to Load Youtube Player
 featureItems.forEach((item) => {
     const videoPreview = item.querySelector(".video-preview");
     const youtubeContainer = item.querySelector(".youtube-container");
@@ -377,29 +378,22 @@ window.addEventListener("wheel", (event) => {
 
 // Swipe Navigation Support
 document.addEventListener("touchstart", (event) => {
-    const touch = event.touches[0];
-    startY = touch.clientY; // Record the starting Y position
-    startTime = Date.now(); // Record the starting time
+    touchStartY = event.changedTouches[0].screenY;
 });
 document.addEventListener("touchend", (event) => {
-    const touch = event.changedTouches[0];
-    const endY = touch.clientY; // Get the ending Y position
-    const distanceY = endY - startY; // Calculate the vertical distance
-    const elapsedTime = Date.now() - startTime; // Calculate the elapsed time
+    touchEndY = event.changedTouches[0].screenY;
 
-    // Check if the gesture qualifies as a swipe
-    if (Math.abs(distanceY) > SWIPE_THRESHOLD && elapsedTime < TIME_THRESHOLD) {
-        if (distanceY > 0) {
-            // Swipe down detected
-            navigateToFeature(currentIndex - 1, "up");
+    const swipeDistance = touchEndY - touchStartY;
+
+    if (Math.abs(swipeDistance) > 30) { // Minimum swipe distance threshold
+        if (swipeDistance > 0) {
+            // Swiping down triggers "next" feature item
+            navigateToNextFeature();
         } else {
-            // Swipe up detected
-            navigateToFeature(currentIndex + 1, "down");
+            // Swiping up triggers "previous" feature item
+            navigateToPreviousFeature();
         }
     }
-});
-document.addEventListener("touchmove", (event) => {
-    event.preventDefault(); // Prevent any accidental navigation during a move
 });
 
 
