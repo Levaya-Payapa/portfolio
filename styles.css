@@ -171,7 +171,7 @@ body {
 @media only screen and (min-width: 0px){
    /* Feature Items */
    #feature-items {
-       display: absolute;
+       display: fixed;
        justify-content: center;
        align-items: center;
        height: 100vh;
