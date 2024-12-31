@@ -18,7 +18,7 @@
    --info-page-height: 60vh;
 
    /* Adjustment Controls */
-   --DotClickMargin: 65%;
+   --DotClickMargin: 100%;
    --NavBarHeight:
 }
 
@@ -137,7 +137,7 @@ body {
    color: hsl(0, 0%, 50%);
    text-shadow: 0 0 0 transparent;
    margin: 0; /* Remove default margin */
-   margin-bottom: 45px;
+   margin-bottom: 20px;
 }
 .about-text p { /* Style for body text */
    display: block;
