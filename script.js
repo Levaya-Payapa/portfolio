@@ -5,11 +5,10 @@ const navLeft = document.querySelector("#nav-left");
 const navRight = document.querySelector("#nav-right");
 const navBar = document.querySelector(".nav-bar");
 const aboutText = document.querySelector('.about-scrolling-text');
-let startY = 0;
-let touchEndY = 0;
-let startTime = 0;
 const SWIPE_THRESHOLD = 50; // Minimum distance for a swipe (in pixels)
-const TIME_THRESHOLD = 500; // Maximum time for a swipe (in ms)
+const TIME_THRESHOLD = 500; // Maximum time for a swipe (in milliseconds)
+let startY = 0; // Starting Y coordinate of touch
+let startTime = 0; // Starting time of touch
 let quickNavDots;
 let animationTimeout = null;
 let activeYouTube = null;
@@ -57,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Show Play Button if Auto-Play is Blocked
+// Show a play button to manually start playback
 window.addEventListener("load", () => {
     let userInteracted = false;
 
@@ -127,7 +126,7 @@ window.addEventListener("load", () => {
 });
 
 
-// Click to Load Youtube Player
+// Youtube Player
 featureItems.forEach((item) => {
     const videoPreview = item.querySelector(".video-preview");
     const youtubeContainer = item.querySelector(".youtube-container");
@@ -292,7 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Add CSS dynamically to simulate :active animation
+// Keyboard Shortcuts Trigger Click Animation
 const style = document.createElement("style");
 style.textContent = `
     .nav-buttons button.active-simulated:after {
@@ -309,7 +308,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 
-// Trigger Video Hint when a YouTube player loads
+// Trigger Video Hint When YouTube player Loads
 function showVideoHint() {
     const videoHint = document.getElementById("video-hint");
 
@@ -378,22 +377,29 @@ window.addEventListener("wheel", (event) => {
 
 // Swipe Navigation Support
 document.addEventListener("touchstart", (event) => {
-    touchStartY = event.changedTouches[0].screenY;
+    const touch = event.touches[0];
+    startY = touch.clientY; // Record the starting Y position
+    startTime = Date.now(); // Record the starting time
 });
 document.addEventListener("touchend", (event) => {
-    touchEndY = event.changedTouches[0].screenY;
+    const touch = event.changedTouches[0];
+    const endY = touch.clientY; // Get the ending Y position
+    const distanceY = endY - startY; // Calculate the vertical distance
+    const elapsedTime = Date.now() - startTime; // Calculate the elapsed time
 
-    const swipeDistance = touchEndY - touchStartY;
-
-    if (Math.abs(swipeDistance) > 30) { // Minimum swipe distance threshold
-        if (swipeDistance > 0) {
-            // Swiping down triggers "next" feature item
-            navigateToNextFeature();
+    // Check if the gesture qualifies as a swipe
+    if (Math.abs(distanceY) > SWIPE_THRESHOLD && elapsedTime < TIME_THRESHOLD) {
+        if (distanceY > 0) {
+            // Swipe down detected
+            navigateToFeature(currentIndex - 1, "up");
         } else {
-            // Swiping up triggers "previous" feature item
-            navigateToPreviousFeature();
+            // Swipe up detected
+            navigateToFeature(currentIndex + 1, "right");
         }
     }
+});
+document.addEventListener("touchmove", (event) => {
+    event.preventDefault(); // Prevent any accidental navigation during a move
 });
 
 
