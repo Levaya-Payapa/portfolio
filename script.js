@@ -229,8 +229,8 @@ function navigateToFeature(newIndex, direction) {
 }
 navLeft.addEventListener("click", () => navigateToFeature(currentIndex - 1, "left"));
 navRight.addEventListener("click", () => navigateToFeature(currentIndex + 1, "right"));
-aboutText.addEventListener("wheel", (event) => {
-    event.stopPropagation(); // Disable Scrolling in About Page
+aboutText.addEventListener("wheel", (event) => { // Disable Scrolling in About Page
+    event.stopPropagation(); 
 });
 
 
@@ -378,11 +378,25 @@ window.addEventListener("wheel", (event) => {
 // Swipe Navigation Support
 document.addEventListener("touchstart", (event) => {
     const touch = event.touches[0];
+    const targetElement = event.target.closest(".about-scrolling-text");
+
+    // Disable swipe if the touch started inside '.about-scrolling-text'
+    if (targetElement) {
+        return; // Do nothing if touch originates from about info page
+    }
+
     startY = touch.clientY; // Record the starting Y position
     startTime = Date.now(); // Record the starting time
 });
 document.addEventListener("touchend", (event) => {
     const touch = event.changedTouches[0];
+    const targetElement = event.target.closest(".about-scrolling-text");
+
+    // Disable swipe if the touch ended inside '.about-scrolling-text'
+    if (targetElement) {
+        return; // Do nothing if touch ends on about info page
+    }
+
     const endY = touch.clientY; // Get the ending Y position
     const distanceY = endY - startY; // Calculate the vertical distance
     const elapsedTime = Date.now() - startTime; // Calculate the elapsed time
@@ -399,7 +413,12 @@ document.addEventListener("touchend", (event) => {
     }
 });
 document.addEventListener("touchmove", (event) => {
-    event.preventDefault(); // Prevent any accidental navigation during a move
+    const targetElement = event.target.closest(".about-scrolling-text");
+
+    // Allow default scrolling behavior within '.about-scrolling-text'
+    if (!targetElement) {
+        event.preventDefault(); // Prevent accidental navigation during a move elsewhere
+    }
 });
 
 
