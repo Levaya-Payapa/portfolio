@@ -422,6 +422,23 @@ document.addEventListener("touchmove", (event) => {
 });
 
 
+// Adjust Height For Mobile Browser Bottom Address Bars (looking at you Firefox & Edge 😤)
+function adjustVideoInfo() {
+    const videoInfo = document.querySelector('.video-info');
+    const navBar = document.querySelector('#nav-bar');
+
+    if (videoInfo && navBar) {
+        const navBarHeight = navBar.offsetHeight;
+        const viewportHeight = window.innerHeight;
+        const safeAreaOffset = viewportHeight - navBar.getBoundingClientRect().bottom;
+
+        videoInfo.style.bottom = `${navBarHeight + safeAreaOffset}px`;
+    }
+}
+window.addEventListener('resize', adjustVideoInfo); // Adjust on load and window resize
+window.addEventListener('load', adjustVideoInfo);
+
+
 // Initialize
 generateQuickNavDots();
 updateBackgroundColor("color-1"); // Set initial background color
