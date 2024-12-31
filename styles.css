@@ -77,7 +77,6 @@ body {
    overflow: hidden
 }
 .nav-buttons button:hover, .video-info .play-button:hover {
-   background-color: rgba(0, 0, 0, 0.5);
    transition: background-color .3s; /* change speed:  button-hover*/
 }
 .nav-buttons button:after { /* Click Animations */
@@ -144,7 +143,7 @@ body {
    display: block;
    hyphens: auto;
    font-size: 16px;
-   font-weight: 100;
+   font-weight: 400;
    color: hsl(0, 0%, 80%);
    text-shadow: 0 0 0 transparent;
    hyphens: auto; /* Enable hyphenation */
@@ -221,9 +220,9 @@ body {
        width: 100%;
        height: calc(100vh - 50px);
        background-color: black;
-       z-index: 10;
        display: none;
        pointer-events: none; /* Prevent interactions by default */
+       z-index: 10;
    }
    .youtube-container iframe {
        width: 100%;
@@ -269,7 +268,7 @@ body {
        display: block;
        hyphens: auto;
        font-size: 16px;
-       font-weight: 100;
+       font-weight: 400;
        color: hsl(0, 0%, 80%);
        text-shadow: 0 0 0 transparent;
        overflow-wrap: break-word; /* Break long words if needed */
@@ -318,6 +317,9 @@ body {
 
 /* Responsive Breakspoints - Medium Screen */
 @media only screen and (min-width: 768px){
+    .nav-buttons button:hover, .video-info .play-button:hover {
+       background-color: rgba(0, 0, 0, 0.5);
+    }
     #video-hint {
         padding-top: 6.5px;
         font-size: 14px;
