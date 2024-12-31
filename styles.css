@@ -42,7 +42,7 @@ body {
 /* Nav Bar */
 #nav-bar {
    position: fixed;
-   bottom: 0;
+   bottom: env(safe-area-inset-bottom, 0); /* Adjust for bottom safe area */
    width: 100%;
    height: calc(var(--info-page-height) + 60px);
    transform: translateY(var(--info-page-height));
@@ -237,7 +237,7 @@ body {
    .video-info {
        position: fixed;
        min-height: 300px;
-       bottom: 0;
+       bottom: env(safe-area-inset-bottom, 0); /* Adjust for bottom safe area */
        width: 100%;
        padding: 8px 15px 15px 15px;
        box-sizing: border-box;
@@ -331,9 +331,9 @@ body {
    }
    /* Video Info */
    .video-info {
-       height: 230px;
-       min-height: 200px;
-       padding: 5px 15px 15px 15px;
+        height: 230px;
+        min-height: 200px;
+        padding: 5px 15px 15px 15px;
    }
    .video-info h1 {
        font-size: 27px;
