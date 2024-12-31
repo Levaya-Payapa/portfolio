@@ -235,7 +235,7 @@ body {
    }
    /* Video Info */
    .video-info {
-       position: absolute;
+       position: fixed;
        min-height: 300px;
        bottom: 0;
        width: 100%;
