@@ -232,7 +232,7 @@ body {
    /* Video Info */
    .video-info {
        position: fixed;
-       min-height: 300px;
+       min-height: 350px;
        bottom: 0;
        width: 100%;
        padding: 8px 15px 15px 15px;
@@ -276,7 +276,7 @@ body {
    #quick-nav {
        position: absolute;
        right: 20px;
-       top: calc((100vh - 290px - 60px) / 2);
+       top: calc((100vh - 400px) / 2);
        transform: translateY(-50%);
        display: flex;
        flex-direction: column;
