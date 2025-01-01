@@ -167,7 +167,7 @@ featureItems.forEach((item) => {
 
             // Create and load the new YouTube iframe
             const iframe = document.createElement("iframe");
-            iframe.src = `${youtubeURL}?rel=0`;
+            iframe.src = `${youtubeURL}?rel=0&vq=hd1080`;
             iframe.allow = "autoplay; encrypted-media";
             iframe.allowFullscreen = true;
 
@@ -206,6 +206,7 @@ document.addEventListener("keydown", (event) => {
         toggleQuickNavOpacity(false);
     }
 });
+
 
 // Function to toggle quick nav dots opacity
 function toggleQuickNavOpacity(isYouTubeActive) {
