@@ -494,6 +494,67 @@ document.addEventListener("touchmove", (event) => {
 });
 
 
+// Browser Back-Nav Closes YT Player or Returns to Cover Video
+window.addEventListener("load", () => {
+    // Push initial state
+    history.replaceState({ featureIndex: 0, youtubeActive: false }, "");
+
+    // Listen to the back navigation
+    window.addEventListener("popstate", (event) => {
+        const state = event.state;
+
+        if (state) {
+            if (state.youtubeActive && activeYouTube) {
+                // Close YouTube player
+                activeYouTube.innerHTML = ""; // Remove iframe
+                activeYouTube.style.display = "none"; // Hide container
+                activeYouTube.classList.remove("active");
+                activeYouTube = null; // Reset active player tracking
+
+                // Update history to reflect YouTube is now closed
+                history.replaceState({ featureIndex: state.featureIndex, youtubeActive: false }, "");
+            } else if (!state.youtubeActive && state.featureIndex === 0) {
+                // If on the cover video, allow default back navigation
+                history.back();
+            } else {
+                // Navigate to the cover video
+                navigateToFeatureItem(0);
+                history.replaceState({ featureIndex: 0, youtubeActive: false }, "");
+            }
+        }
+    });
+
+    // Add a function to track navigation and YouTube state
+    const updateHistoryState = (featureIndex, youtubeActive) => {
+        history.pushState({ featureIndex, youtubeActive }, "");
+    };
+
+    // Hook into YouTube player logic
+    featureItems.forEach((item, index) => {
+        const videoPreview = item.querySelector(".video-preview");
+        const youtubeContainer = item.querySelector(".youtube-container");
+
+        if (youtubeContainer) {
+            videoPreview?.addEventListener("click", () => {
+                updateHistoryState(index, true);
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && activeYouTube) {
+                    updateHistoryState(index, false);
+                }
+            });
+        }
+    });
+
+    // Hook into feature item navigation logic
+    const navigateToFeatureItem = (index) => {
+        // Your existing feature navigation logic here
+        console.log(`Navigating to feature item ${index}`);
+    };
+});
+
+
 // Initialize
 generateQuickNavDots();
 updateBackgroundColor("color-1"); // Set initial background color
