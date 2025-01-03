@@ -1,0 +1,467 @@
+:root {
+    /* Color Controls */
+   --color-1: #fb6c32;
+   --color-2: #90a0e5;
+   --color-3: #009bdb;
+   --color-4: #ff1800;
+   --color-5: #ffa139;
+   --color-6: #457088;
+   --color-7: #68c2ff;
+   --color-8: #8b2c2b;
+   --dynamic-color: var(--color-1); /* Default to first color */
+   --bg-color: hsl(0, 0%, 10%);
+   --nav-bar-color: hsl(0, 0%, 15%);
+
+   /* Animation Controls */
+   --animate-pos-up: translateY(-25px);
+   --animate-pos-down: translateY(25px);
+   --info-page-height: 60vh;
+
+   /* Adjustment Controls */
+   --DotClickMargin: 150%;
+}
+
+
+/* General Styles */
+body {
+   background-color: var(--bg-color); /* Color behind Feature Items */
+   color: white; /* Default dynamic color for text */
+   font-size: 18px;
+   font-family: Arial, Helvetica, sans-serif;
+   text-shadow: 0 0 50px black;
+   font-weight: 700;
+   transition: color 0.8s ease;
+   margin: 0;
+   padding: 0;
+   overflow-y: hidden;
+   overflow-x: hidden;
+}
+
+
+/* Nav Bar */
+#nav-bar {
+   position: fixed;
+   bottom: 0;
+   width: 100%;
+   height: calc(var(--info-page-height) + 60px);
+   transform: translateY(var(--info-page-height));
+   display: flex;
+   justify-content: space-between;
+   align-items: top;
+   padding: 15px 15px;
+   box-sizing: border-box;
+   background-color: var(--nav-bar-color);
+   border-radius: 10px 10px 0 0; /* Rounded top corners */
+   z-index: 20;
+}
+.nav-buttons{
+   display: flex;
+   gap: 15px;
+   transition-duration: 0.4s;
+   -webkit-transition-duration: 0.4s; /* Safari */
+}
+.nav-buttons button, .video-info .play-button {
+   width: 30px;
+   height: 30px;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   border: none;
+   border-radius: 7px;
+   background-color: var(--dynamic-color);
+   color: white;
+   font-size: 18px;
+   cursor: pointer;
+   transition: background-color .8s;
+   overflow: hidden;
+}
+.nav-buttons button:hover, .video-info .play-button:hover {
+   transition: background-color .3s; /* change speed:  button-hover*/
+}
+.nav-buttons button:after { /* Click Animations */
+   content: "";
+   border: none;
+   opacity: 0;
+   transform: translateX(-10px);
+   -webkit-transform: translateX(-10px); /* Safari */
+   transition: all 0.5s ease;
+   -webkit-transition: all 0.5s ease; /* Safari */
+   box-shadow: 0 0 0 20px white;
+}
+.nav-buttons button:active:after { /* Click Animations */
+   position: relative;
+   left: 0;
+   top:0;
+   opacity: 1;
+   transition: 0s;
+   -webkit-transition: 0s; /* Safari */
+}
+#video-hint {
+    color: white;
+    padding-top: 8px;
+    font-size: 10px;
+    border-radius: 5px;
+    text-shadow: 0 0 0 transparent;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+    z-index: 3;
+}
+#video-hint.show {
+    opacity: 1;
+}
+
+
+/* About Pate Text */
+.about-text {
+   position: fixed;
+   top: 60.5px;
+   width: calc(100vw - 30px);
+   height: calc(var(--info-page-height) - 15px);
+   padding: 7px /*top*/ 2px/*right*/ 15px/*bottom*/ 15px;/*left*/
+   box-sizing: border-box;
+   background-color: var(--bg-color);
+   border-radius: 10px;
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   overflow: none;
+}
+.about-text h1 {
+   font-size: 26px;
+   font-weight: 900;
+   color: var(--dynamic-color);
+   text-shadow: 0 0 0 transparent;
+   margin: 0; /* Remove default margin */
+   margin-bottom: 2px;
+   transition: color 0.8s ease;
+}
+.about-text h2 { /* Subheader Styling */
+   font-size: 14px;
+   color: hsl(0, 0%, 50%);
+   text-shadow: 0 0 0 transparent;
+   margin: 0; /* Remove default margin */
+   margin-bottom: 20px;
+}
+.about-text p { /* Style for body text */
+   display: block;
+   hyphens: auto;
+   font-size: 16px;
+   font-weight: 400;
+   color: hsl(0, 0%, 80%);
+   text-shadow: 0 0 0 transparent;
+   hyphens: auto; /* Enable hyphenation */
+   overflow-wrap: break-word; /* Break long words if needed */
+   word-wrap: break-word; /* For older browser compatibility */
+   margin: 0; /* Remove default margin */
+   margin-bottom: 20px;
+}
+.about-text h3 {
+   margin-top: 25px;
+   font-weight: 900;
+   color: var(--dynamic-color);
+   transition: color 0.8s ease;
+}
+.about-text ul {
+   margin-top: -10px;
+   margin-bottom: 25px;
+}
+.about-text li {
+   font-size: 16px;
+   font-weight: 300;
+   color: hsl(0, 0%, 80%);
+   text-shadow: 0 0 0 transparent;
+}
+.about-scrolling-text {
+   padding-right: 15px;
+   overflow: auto;
+}
+.about-scrolling-text::-webkit-scrollbar { /* Chrome, Edge, & Safari scroll bar */
+    width: 5px; /* Adjust scrollbar width */
+    background-color: var(--dynamic-color); /* Scrollbar thumb color */
+}
+.about-scrolling-text { /* Firefox scroll bar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--dynamic-color) transparent; /* Thumb color and track color */
+    transition: scrollbar-color .8s;
+}
+
+
+/* Responsive Breakspoints - Narrow Screen */
+@media only screen and (min-width: 0px){
+   /* Feature Items */
+   #feature-items {
+       display: fixed;
+   }
+   .feature-item {
+        position: absolute;
+        width: 100%;
+        height: calc(100vh - 50px);
+        transform: translateY(-200%); /* Set default position off screen */
+        display: flex;
+        opacity: 0;
+        animation-fill-mode: forwards;
+   }
+   .click-prompt {
+       position: absolute;
+       top: 14px;
+       left: 16px;
+       z-index: 3;
+   }
+   .video-preview, iframe {
+       width: 100%;
+       height: calc(100vh - 380px);
+       border: none;
+       object-fit: cover;
+       margin-top: -15px;
+       cursor: pointer;
+       z-index: 1;
+   }
+   .cover-video, iframe {
+       width: 100%;
+       height: 100%;
+       border: none;
+       object-fit: cover;
+       z-index: 1;
+   }
+   .feature-item:first-child {
+       opacity: 1; /* Sets first feature item to visible on page load */
+   }
+   .youtube-container {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: calc(100vh - 50px);
+       background-color: black;
+       display: none;
+       pointer-events: none; /* Prevent interactions by default */
+       z-index: 10;
+   }
+   .youtube-container iframe {
+       width: 100%;
+       height: 80vh;
+       margin-top: 5vh;
+       border: none;
+   }
+   .youtube-container.active {
+       pointer-events: auto; /* Enable interaction when active */
+   }
+   /* Video Info */
+   .video-info {
+       position: fixed;
+       min-height: 300px;
+       bottom: 0;
+       width: 100%;
+       margin-bottom: 60px;
+       padding: 8px 15px 15px 15px;
+       box-sizing: border-box;
+       background-color: var(--bg-color);
+       border-radius: 10px 10px 0 0; /* Rounded top corners */
+       display: flex;
+       flex-direction: column; /* Arrange items vertically */
+       align-items: flex-start; /* Align items to the left */
+       gap: 4px; /* Add spacing between h1, h2, and p */
+       z-index: 2;
+   }
+   .video-info h1 { /* Title Styling */
+       font-size: 20px;
+       font-weight: 900;
+       text-shadow: 0 0 0 transparent;
+       color: var(--dynamic-color);
+       margin: 0; /* Remove default margin */
+       transition: color 0.8s ease;
+   }
+   .video-info h2 { /* Subheader Styling */
+       font-size: 13px;
+       color: hsl(0, 0%, 50%);
+       text-shadow: 0 0 0 transparent;
+       margin: 0; /* Remove default margin */
+       margin-bottom: 6px;
+   }
+   .inline-text p { /* Style for inline text */
+       display: block;
+       hyphens: auto;
+       font-size: 16px;
+       font-weight: 400;
+       color: hsl(0, 0%, 80%);
+       text-shadow: 0 0 0 transparent;
+       overflow-wrap: break-word; /* Break long words if needed */
+       word-wrap: break-word; /* For older browser compatibility */
+       margin: 0; /* Remove default margin */
+       margin-bottom: 7px;
+   }
+   /* Quick Navigation Dots */
+   #quick-nav {
+       position: absolute;
+       right: 20px;
+       transform: translateY(-50%);
+       display: flex;
+       flex-direction: column;
+       gap: 25px;
+       z-index: 2;
+   }
+   .dot {
+        position: relative; /* Ensure it's in context */
+        width: 8px;
+        height: 8px;
+        background-color: rgba(0, 0, 0, 0.6);
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color .5s ease;
+   } 
+   .dot.active {
+       background-color: white;
+       box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+   }
+   .dot::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: calc(100% + 2 * var(--DotClickMargin));
+        height: calc(100% + 2 * var(--DotClickMargin));
+        border-radius: 50%;
+        background-color: transparent;
+        pointer-events: auto; /* Allow interaction */
+   }
+}
+
+
+/* Responsive Breakspoints - Medium Screen */
+@media only screen and (min-width: 768px){
+    .nav-buttons button:hover, .video-info .play-button:hover {
+       background-color: rgba(0, 0, 0, 0.5);
+    }
+    #video-hint {
+        padding-top: 6.5px;
+        font-size: 14px;
+    }
+   /* Feature Items */
+   .video-preview, iframe {
+       height: calc(100vh - 320px);
+       margin-top: -10px;
+   }
+   .youtube-container {
+       position: absolute;
+       top: 0;
+       left: 0;
+       width: 100%;
+       height: calc(100vh - 50px);
+       background-color: black;
+       display: none;
+       pointer-events: none; /* Prevent interactions by default */
+       z-index: 10;
+   }
+   .youtube-container iframe {
+       width: 100%;
+       height: calc(100vh - 60px);
+       margin-top: 0px;
+       border: none;
+       z-index: 10;
+   }
+   .youtube-container.active {
+       pointer-events: auto; /* Enable interaction when active */
+       z-index: 10;
+   }
+   /* Video Info */
+   .video-info {
+        height: 230px;
+        margin-bottom: 0px;
+        padding: 10px 15px 15px 15px;
+   }
+   .video-info h1 {
+       font-size: 27px;
+   }
+   .video-info h2 {
+       margin-bottom: 20px;
+   }
+   .inline-text p {
+       margin-bottom: 25px;
+   }
+   /* Quick Navigation Dots */
+   .dot:hover {
+        scale: 169%;
+        transition: scale .3s ease;
+   }
+}
+
+
+/* Responsive Breakpoints - Wide Screen */
+@media only screen and (min-width: 1200px) {
+body {
+    --animate-pos-up: translateY(-0px);
+    --animate-pos-down: translateY(0px);
+}
+   /* Feature Items */
+   .feature-item {
+       height: 100%;
+   }
+   .click-prompt {
+       left: 545px;
+   }
+   .video-preview, iframe {
+       width: calc(100vw - 515px);
+       height: 100%;
+       margin-left: 515px;
+       margin-top: -30px;
+   }
+   .youtube-container {
+       left: -515px;
+       width: 200%;
+   }
+   .youtube-container iframe {
+       width: 50%;
+   }
+   /* Video Info */
+   .video-info {
+       top: 0;
+       width: 525px;
+       height: calc(100vh - 60px);
+       padding: 15px 25px 0px 25px;
+       border-radius: 0 10px 10px 0; /* Rounded right corners */
+   }
+}
+
+
+/* Keyframes for Video Previews */
+@keyframes keyInFromAbove {
+    0% {transform: translateY(-200%); opacity: 0;}
+    1% {transform: var(--animate-pos-up); opacity: 0;}
+    100% {transform: translateY(0); opacity: 1;}
+}
+@keyframes keyInFromBelow {
+    0% {transform: translateY(200%); opacity: 0;}
+    1% {transform: var(--animate-pos-down); opacity: 0;}
+    100% {transform: translateY(0); opacity: 1;}
+}
+@keyframes keyOutFromAbove {
+    0% {transform: translateY(0); opacity: 1;}
+    99% {transform: var(--animate-pos-up); opacity: 0;}
+    100% {transform: translateY(-200%); opacity: 0;}
+}
+@keyframes keyOutFromBelow {
+    0% {transform: translateY(0); opacity: 1;}
+    99% {transform: var(--animate-pos-down); opacity: 0;}
+    100% {transform: translateY(200%); opacity: 0;}
+}
+
+
+/* Keyframes Info Page */
+@keyframes InfoPageOn {
+   from {
+       transform: translateY(var(--info-page-height));
+   }
+   to {
+       transform: translateY(0);
+   }
+}
+@keyframes InfoPageOff {
+   from {
+       transform: translateY(0);
+   }
+   to {
+       transform: translateY(var(--info-page-height));
+   }
+}
