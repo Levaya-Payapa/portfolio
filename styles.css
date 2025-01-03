@@ -18,7 +18,7 @@
    --info-page-height: 60vh;
 
    /* Adjustment Controls */
-   --DotClickMargin: 100%;
+   --DotClickMargin: 150%;
 }
 
 
@@ -73,7 +73,8 @@ body {
    font-size: 18px;
    cursor: pointer;
    transition: background-color .8s;
-   overflow: hidden
+   overflow: hidden;
+   -webkit-transition: background-color .8s; /* Safari */
 }
 .nav-buttons button:hover, .video-info .play-button:hover {
    transition: background-color .3s; /* change speed:  button-hover*/
@@ -83,7 +84,9 @@ body {
    border: none;
    opacity: 0;
    transform: translateX(-10px);
+   -webkit-transform: translateX(-10px); /* Safari */
    transition: all 0.5s ease;
+   -webkit-transition: all 0.5s ease; /* Safari */
    box-shadow: 0 0 0 20px white;
 }
 .nav-buttons button:active:after { /* Click Animations */
@@ -92,6 +95,7 @@ body {
    top:0;
    opacity: 1;
    transition: 0s;
+   -webkit-transition: 0s; /* Safari */
 }
 #video-hint {
     color: white;
