@@ -1,13 +1,13 @@
 :root {
     /* Color Controls */
    --color-1: #fb6c32;
-   --color-2: #90a0e5;
-   --color-3: #009bdb;
-   --color-4: #ff1800;
-   --color-5: #ffa139;
-   --color-6: #457088;
-   --color-7: #68c2ff;
-   --color-8: #8b2c2b;
+   --color-2: #EEA4BC;    
+   --color-3: #90a0e5;
+   --color-4: #009bdb;
+   --color-5: #ff1800;
+   --color-6: #ffa139;
+   --color-7: #457088;
+   --color-8: #68c2ff;
    --dynamic-color: var(--color-1); /* Default to first color */
    --bg-color: hsl(0, 0%, 10%);
    --nav-bar-color: hsl(0, 0%, 15%);
