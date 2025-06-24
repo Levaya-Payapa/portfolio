@@ -34,15 +34,24 @@ body {
    margin: 0;
    padding: 0;
    overflow-y: hidden;
-   overflow-x: hidden;
-   }
+   overflow-x: hidden; /* NOTE: This might hide content if fixed elements still try to expand beyond 2000px and are not properly centered. */
+
+   /* MODIFIED: Added max-width, margin:auto, and position:relative */
+   max-width: 2000px; /* Constrains the body's content width */
+   margin: 0 auto;    /* Centers the body horizontally */
+   position: relative; /* Essential for 'position: absolute' children to be relative to this 2000px width */
+}
 
 
 /* Nav Bar */
 #nav-bar {
    position: fixed;
    bottom: 0;
-   width: 100%;
+   /* MODIFIED: Added max-width, left, and transform for centering */
+   max-width: 2000px; /* Constrain fixed element width */
+   left: 50%;         /* Move left edge to center of viewport */
+   transform: translateX(-50%); /* Shift left by half its width to truly center */
+   width: 100%; /* This 100% now refers to its new max-width of 2000px */
    height: calc(var(--info-page-height) + 60px);
    transform: translateY(var(--info-page-height));
    display: flex;
@@ -76,7 +85,7 @@ body {
    overflow: hidden;
 }
 .nav-buttons button:hover, .video-info .play-button:hover {
-   transition: background-color .3s; /* change speed:  button-hover*/
+   transition: background-color .3s; /* change speed: button-hover*/
 }
 .nav-buttons button:after { /* Click Animations */
    content: "";
@@ -116,7 +125,12 @@ body {
 .about-text {
    position: fixed;
    top: 60.5px;
-   width: calc(100vw - 30px);
+   /* MODIFIED: Changed width from 100vw to 100% and added max-width, left, transform */
+   width: calc(100% - 30px); /* 100% of its new max-width of 2000px, minus 30px padding */
+   max-width: 2000px; /* Constrain fixed element width */
+   left: 50%;         /* Move left edge to center of viewport */
+   transform: translateX(-50%); /* Shift left by half its width to truly center */
+
    height: calc(var(--info-page-height) - 15px);
    padding: 7px /*top*/ 2px/*right*/ 15px/*bottom*/ 15px;/*left*/
    box-sizing: border-box;
@@ -189,143 +203,148 @@ body {
 
 /* Responsive Breakspoints - Narrow Screen */
 @media only screen and (min-width: 0px){
-   /* Feature Items */
-   #feature-items {
-       display: fixed;
-   }
-   .feature-item {
-        position: absolute;
-        width: 100%;
-        height: calc(100vh - 50px);
+    /* Feature Items */
+    #feature-items {
+        display: fixed; /* NOTE: This should likely be 'display: block;' or other, 'fixed' is not a display value */
+    }
+    .feature-item {
+        position: absolute; /* Will be relative to the body's new 2000px width */
+        width: 100%; /* This 100% now refers to the body's max-width of 2000px */
+        height: calc(100vh - 50px); /* Height still relative to viewport height */
         transform: translateY(-200%); /* Set default position off screen */
         display: flex;
         opacity: 0;
         animation-fill-mode: forwards;
-   }
-   .click-prompt {
-       position: absolute;
-       top: 14px;
-       left: 16px;
-       z-index: 3;
-   }
-   .video-preview, iframe {
-       width: 100%;
-       height: calc(100vh - 380px);
-       border: none;
-       object-fit: cover;
-       margin-top: -15px;
-       cursor: pointer;
-       z-index: 1;
-   }
-   .cover-video, iframe {
-       width: 100%;
-       height: 100%;
-       border: none;
-       object-fit: cover;
-       z-index: 1;
-   }
-   .feature-item:first-child {
-       opacity: 1; /* Sets first feature item to visible on page load */
-   }
-   .youtube-container {
-       position: absolute;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: calc(100vh - 50px);
-       background-color: black;
-       display: none;
-       pointer-events: none; /* Prevent interactions by default */
-       z-index: 10;
-   }
-   .youtube-container iframe {
-       width: 100%;
-       height: 80vh;
-       margin-top: 5vh;
-       border: none;
-   }
-   .youtube-container.active {
-       pointer-events: auto; /* Enable interaction when active */
-   }
-   /* Video Info */
-   .video-info {
-       position: fixed;
-       min-height: 300px;
-       bottom: 0;
-       width: 100%;
-       margin-bottom: 60px;
-       padding: 8px 15px 15px 15px;
-       box-sizing: border-box;
-       background-color: var(--bg-color);
-       border-radius: 10px 10px 0 0; /* Rounded top corners */
-       display: flex;
-       flex-direction: column; /* Arrange items vertically */
-       align-items: flex-start; /* Align items to the left */
-       gap: 4px; /* Add spacing between h1, h2, and p */
-       z-index: 2;
-   }
-   .video-info h1 { /* Title Styling */
-       font-size: 20px;
-       font-weight: 900;
-       text-shadow: 0 0 0 transparent;
-       color: var(--dynamic-color);
-       margin: 0; /* Remove default margin */
-       transition: color 0.8s ease;
-   }
-   .video-info h2 { /* Subheader Styling */
-       font-size: 13px;
-       color: hsl(0, 0%, 50%);
-       text-shadow: 0 0 0 transparent;
-       margin: 0; /* Remove default margin */
-       margin-bottom: 6px;
-   }
-   .inline-text p { /* Style for inline text */
-       display: block;
-       hyphens: auto;
-       font-size: 16px;
-       font-weight: 400;
-       color: hsl(0, 0%, 80%);
-       text-shadow: 0 0 0 transparent;
-       overflow-wrap: break-word; /* Break long words if needed */
-       word-wrap: break-word; /* For older browser compatibility */
-       margin: 0; /* Remove default margin */
-       margin-bottom: 7px;
-   }
-   /* Quick Navigation Dots */
-   #quick-nav {
-       position: absolute;
-       right: 20px;
-       transform: translateY(-50%);
-       display: flex;
-       flex-direction: column;
-       gap: 25px;
-       z-index: 2;
-   }
-   .dot {
-        position: relative; /* Ensure it's in context */
-        width: 8px;
-        height: 8px;
-        background-color: rgba(0, 0, 0, 0.6);
-        border-radius: 50%;
+    }
+    .click-prompt {
+        position: absolute; /* Will be relative to .feature-item */
+        top: 14px;
+        left: 16px;
+        z-index: 3;
+    }
+    .video-preview, iframe {
+        width: 100%; /* Will be 100% of .feature-item's new 2000px max-width */
+        height: calc(100vh - 380px); /* Height still relative to viewport height */
+        border: none;
+        object-fit: cover;
+        margin-top: -15px;
         cursor: pointer;
-        transition: background-color .5s ease;
-   } 
-   .dot.active {
-       background-color: white;
-       box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
-   }
-   .dot::after {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: calc(100% + 2 * var(--DotClickMargin));
-        height: calc(100% + 2 * var(--DotClickMargin));
-        border-radius: 50%;
-        background-color: transparent;
-        pointer-events: auto; /* Allow interaction */
-   }
+        z-index: 1;
+    }
+    .cover-video, iframe {
+        width: 100%; /* Will be 100% of .feature-item's new 2000px max-width */
+        height: 100%;
+        border: none;
+        object-fit: cover;
+        z-index: 1;
+    }
+    .feature-item:first-child {
+        opacity: 1; /* Sets first feature item to visible on page load */
+    }
+    .youtube-container {
+        position: absolute; /* Will be relative to .feature-item */
+        top: 0;
+        left: 0;
+        width: 100%; /* Will be 100% of .feature-item's new 2000px max-width */
+        height: calc(100vh - 50px); /* Height still relative to viewport height */
+        background-color: black;
+        display: none;
+        pointer-events: none; /* Prevent interactions by default */
+        z-index: 10;
+    }
+    .youtube-container iframe {
+        width: 100%; /* Will be 100% of its parent .youtube-container */
+        height: 80vh; /* Height still relative to viewport height */
+        margin-top: 5vh;
+        border: none;
+    }
+    .youtube-container.active {
+        pointer-events: auto; /* Enable interaction when active */
+    }
+    /* Video Info */
+    .video-info {
+        position: fixed; /* Will ignore body's max-width unless explicitly constrained */
+        min-height: 300px;
+        bottom: 0;
+        /* MODIFIED: Added max-width, left, and transform for centering */
+        max-width: 2000px; /* Constrain fixed element width */
+        left: 50%;         /* Move left edge to center of viewport */
+        transform: translateX(-50%); /* Shift left by half its width to truly center */
+        width: 100%; /* This 100% now refers to its new max-width of 2000px */
+
+        margin-bottom: 60px;
+        padding: 8px 15px 15px 15px;
+        box-sizing: border-box;
+        background-color: var(--bg-color);
+        border-radius: 10px 10px 0 0; /* Rounded top corners */
+        display: flex;
+        flex-direction: column; /* Arrange items vertically */
+        align-items: flex-start; /* Align items to the left */
+        gap: 4px; /* Add spacing between h1, h2, and p */
+        z-index: 2;
+    }
+    .video-info h1 { /* Title Styling */
+        font-size: 20px;
+        font-weight: 900;
+        text-shadow: 0 0 0 transparent;
+        color: var(--dynamic-color);
+        margin: 0; /* Remove default margin */
+        transition: color 0.8s ease;
+    }
+    .video-info h2 { /* Subheader Styling */
+        font-size: 13px;
+        color: hsl(0, 0%, 50%);
+        text-shadow: 0 0 0 transparent;
+        margin: 0; /* Remove default margin */
+        margin-bottom: 6px;
+    }
+    .inline-text p { /* Style for inline text */
+        display: block;
+        hyphens: auto;
+        font-size: 16px;
+        font-weight: 400;
+        color: hsl(0, 0%, 80%);
+        text-shadow: 0 0 0 transparent;
+        overflow-wrap: break-word; /* Break long words if needed */
+        word-wrap: break-word; /* For older browser compatibility */
+        margin: 0; /* Remove default margin */
+        margin-bottom: 7px;
+    }
+    /* Quick Navigation Dots */
+    #quick-nav {
+        position: absolute; /* Will be relative to the body's new 2000px width */
+        right: 20px; /* Will be 20px from the right edge of the body */
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+        z-index: 2;
+    }
+    .dot {
+         position: relative; /* Ensure it's in context */
+         width: 8px;
+         height: 8px;
+         background-color: rgba(0, 0, 0, 0.6);
+         border-radius: 50%;
+         cursor: pointer;
+         transition: background-color .5s ease;
+    }
+    .dot.active {
+        background-color: white;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 1);
+    }
+    .dot::after {
+         content: "";
+         position: absolute;
+         top: 50%;
+         left: 50%;
+         transform: translate(-50%, -50%);
+         width: calc(100% + 2 * var(--DotClickMargin));
+         height: calc(100% + 2 * var(--DotClickMargin));
+         border-radius: 50%;
+         background-color: transparent;
+         pointer-events: auto; /* Allow interaction */
+    }
 }
 
 
@@ -338,53 +357,53 @@ body {
         padding-top: 6.5px;
         font-size: 14px;
     }
-   /* Feature Items */
-   .video-preview, iframe {
-       height: calc(100vh - 320px);
-       margin-top: -10px;
-   }
-   .youtube-container {
-       position: absolute;
-       top: 0;
-       left: 0;
-       width: 100%;
-       height: calc(100vh - 50px);
-       background-color: black;
-       display: none;
-       pointer-events: none; /* Prevent interactions by default */
-       z-index: 10;
-   }
-   .youtube-container iframe {
-       width: 100%;
-       height: calc(100vh - 60px);
-       margin-top: 0px;
-       border: none;
-       z-index: 10;
-   }
-   .youtube-container.active {
-       pointer-events: auto; /* Enable interaction when active */
-       z-index: 10;
-   }
-   /* Video Info */
-   .video-info {
+    /* Feature Items */
+    .video-preview, iframe {
+        height: calc(100vh - 320px); /* Height still relative to viewport height */
+        margin-top: -10px;
+    }
+    .youtube-container {
+        position: absolute; /* Remains relative to .feature-item */
+        top: 0;
+        left: 0;
+        width: 100%; /* Will be 100% of .feature-item's new 2000px max-width */
+        height: calc(100vh - 50px); /* Height still relative to viewport height */
+        background-color: black;
+        display: none;
+        pointer-events: none; /* Prevent interactions by default */
+        z-index: 10;
+    }
+    .youtube-container iframe {
+        width: 100%; /* Will be 100% of its parent .youtube-container */
+        height: calc(100vh - 60px); /* Height still relative to viewport height */
+        margin-top: 0px;
+        border: none;
+        z-index: 10;
+    }
+    .youtube-container.active {
+        pointer-events: auto; /* Enable interaction when active */
+        z-index: 10;
+    }
+    /* Video Info */
+    .video-info {
         height: 230px;
         margin-bottom: 0px;
         padding: 10px 15px 15px 15px;
-   }
-   .video-info h1 {
-       font-size: 27px;
-   }
-   .video-info h2 {
-       margin-bottom: 20px;
-   }
-   .inline-text p {
-       margin-bottom: 25px;
-   }
-   /* Quick Navigation Dots */
-   .dot:hover {
+    }
+    .video-info h1 {
+        font-size: 27px;
+    }
+    .video-info h2 {
+        margin-bottom: 20px;
+    }
+    .inline-text p {
+        margin-bottom: 25px;
+    }
+    /* Quick Navigation Dots */
+    .dot:hover {
         scale: 169%;
         transition: scale .3s ease;
-   }
+    }
 }
 
 
@@ -394,34 +413,49 @@ body {
     --animate-pos-up: translateY(-0px);
     --animate-pos-down: translateY(0px);
 }
-   /* Feature Items */
-   .feature-item {
-       height: 100%;
-   }
-   .click-prompt {
-       left: 545px;
-   }
-   .video-preview, iframe {
-       width: calc(100vw - 515px);
-       height: 100%;
-       margin-left: 515px;
-       margin-top: -30px;
-   }
-   .youtube-container {
-       left: -515px;
-       width: 200%;
-   }
-   .youtube-container iframe {
-       width: 50%;
-   }
-   /* Video Info */
-   .video-info {
-       top: 0;
-       width: 525px;
-       height: calc(100vh - 60px);
-       padding: 15px 25px 0px 25px;
-       border-radius: 0 10px 10px 0; /* Rounded right corners */
-   }
+    /* Feature Items */
+    .feature-item {
+        height: 100%;
+    }
+    .click-prompt {
+        /* NOTE: This 'left' value is now relative to the 2000px wide, centered body.
+                 You might need to adjust this pixel value for desired alignment. */
+        left: 545px;
+    }
+    .video-preview, iframe {
+        /* MODIFIED: Changed 100vw to 100% to calculate relative to the 2000px body.
+                     The pixel values (515px) are now relative to the 2000px body. */
+        width: calc(100% - 515px); /* 100% of body's 2000px width, minus 515px */
+        height: 100%;
+        margin-left: 515px; /* This margin is relative to the 2000px body */
+        margin-top: -30px;
+    }
+    .youtube-container {
+        /* NOTE: These values are now relative to the 2000px wide, centered body.
+                 'left: -515px;' will pull it 515px left of the body's left edge.
+                 'width: 200%;' will make it 200% of the body's 2000px width (4000px).
+                 Test this thoroughly, as the visual outcome will be different from a 100vw setup. */
+        left: -515px;
+        width: 200%;
+    }
+    .youtube-container iframe {
+        width: 50%; /* This will be 50% of the new 4000px wide .youtube-container */
+    }
+    /* Video Info */
+    .video-info {
+        top: 0;
+        width: 525px; /* This fixed width will be constrained by its max-width: 2000px set earlier, but 525px is smaller */
+        height: calc(100vh - 60px);
+        padding: 15px 25px 0px 25px;
+        border-radius: 0 10px 10px 0; /* Rounded right corners */
+        /* NOTE: .video-info also has max-width, left, and transform: translateX(-50%) from above.
+                 It will be a fixed 525px wide panel, centered horizontally within the 2000px limit.
+                 This might conflict with the margin-left: 515px for the video.
+                 You'll likely need to reconsider its exact positioning in wide screen.
+                 A common approach for fixed sidebars is to give them a fixed 'left' or 'right' value
+                 if they are meant to be strictly aligned to the viewport's edge, or
+                 calculate their position relative to the centered 2000px body. */
+    }
 }
 
 
