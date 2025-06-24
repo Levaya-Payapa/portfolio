@@ -35,7 +35,8 @@ body {
    padding: 0;
    overflow-y: hidden;
    overflow-x: hidden;
-}
+   max-width: 2000px;
+   }
 
 
 /* Nav Bar */
